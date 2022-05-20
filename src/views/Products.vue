@@ -1,15 +1,15 @@
 <template>
   <div class="home">
-     <span v-if="isLoading"> Carregando ... </span> 
-     <span v-else-if="!produtos"> Não foi possível obter os dados </span> 
-    <ProductList v-else :items="produtos" />
+    <span v-if="isLoading"> Carregando ... </span>
+    <span v-else-if="!produtos"> Não foi possível obter os dados </span>
+    <ProductList v-else :items="products" />
+    <span v-if="error"> {{error}} </span>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import ProductList from "@/components/ProductList.vue";
-import productService from "../services/products";
 
 export default {
   name: "Products",
@@ -18,6 +18,7 @@ export default {
     return {
       isLoading: false,
       produtos: [],
+      error:''
     };
   },
 
@@ -28,20 +29,21 @@ export default {
   async mounted() {
     await this.listProducts();
   },
-
+  computed: {
+    products() {
+      return this.$store.getters.products;
+    },
+  },
   methods: {
     async listProducts() {
-       this.isLoading=true 
+      this.isLoading = true;
+      this.error = ''
       try {
-        const products = await productService.read();
-
-        if (products) {
-          this.produtos = products.data;
-        }
+        await this.$store.dispatch("index");
       } catch (error) {
-          console.log('Erro na listagem de produto')
+        this.error = "Erro na listagem de produto"
       }
-      this.isLoading=false
+      this.isLoading = false;
     },
   },
 };
