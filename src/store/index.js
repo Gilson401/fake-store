@@ -5,24 +5,22 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-      items:[
-        {
-        id: 1,
-        title: "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
-        price: 109.95,
-        description: "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
-        category: "men's clothing",
-        image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
-        rating: {
-        rate: 3.9,
-        count: 120,
-        },
-        }]
-  },
+      items:[],
+      itemOnCart: []  
+    },
   mutations: {
     SET_ITEMS(state, items){
         state.items = items
-    }  
+    },
+    ADD_ITEM_CART(state, itemId){
+        state.itemOnCart.push(itemId)
+    } ,
+
+    REMOVE_ITEM_CART(state, itemId){
+        const idx = state.itemOnCart.findIndex(p => p.id == itemId);
+        state.itemOnCart.splice(idx,1); 
+    } 
+      
 },
   actions: {  
     async index({ commit }) {
@@ -39,7 +37,16 @@ export default new Vuex.Store({
   getters: {
     products(state){
         return state.items
-    }
+    },
+    itemsOnCart(state){
+        return state.itemOnCart
+    },
+    itemsOnCartIdCount(state){
+        return (id) => state.itemOnCart.filter(i => i.id == id).length
+    },
+    cartTotalPrice(state){
+        return  state.itemOnCart.reduce((acc,curr) => acc + curr.price, 0)
+    },
   },
   modules: {
   }
