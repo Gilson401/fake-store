@@ -1,0 +1,75 @@
+/* @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap"); */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,200;0,8..144,300;0,8..144,400;0,8..144,500;1,8..144,200;1,8..144,300;1,8..144,400&display=swap');
+
+:root {
+  --fontSize: 0.8;
+  --font-1: 2rem;
+  --font-2: 1.5rem;
+  --font-3: 1.25rem;
+  --font-4: 1rem;
+  --breakpoint-md: 468;
+  --margin-1: 10px;
+}
+body{
+    font-family: 'Roboto Serif', serif;
+}
+h1 {
+  font-size: calc(2rem * var(--fontSize));
+}
+
+h2 {
+  font-size: calc(1.5rem * var(--fontSize));
+}
+
+h3 {
+  font-size: calc(1.25rem * var(--fontSize));
+}
+
+h4 {
+  font-size: calc(1rem * var(--fontSize));
+}
+
+h5 {
+  font-size: calc(0.75rem * var(--fontSize));
+}
+
+h6 {
+  font-size: calc(0.5rem * var(--fontSize));
+}
+
+.flex {
+ display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.space-between {
+    justify-content: space-between;
+}
+
+.container {
+  display: block;
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media screen and (min-width: 468px) {
+  .container {
+    max-width: 80%;
+    display: block;
+  }
+  .hide-large {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 467px) {
+
+    .hide-small {
+        display: none;
+    }
+
+}
+  
