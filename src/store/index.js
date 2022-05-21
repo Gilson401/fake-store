@@ -6,9 +6,21 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
       items:[],
-      itemOnCart: []  
+      itemOnCart: [] ,
+      orderBy: 'price',
+      categories: [],
+      filterBy: 'jewelery'
     },
   mutations: {
+    SET_FILTER_BY(state, filterBy){
+        state.filterBy = filterBy
+    },
+
+    SET_CATEGORIES(state, categories){
+        state.categories = categories
+    },
+
+
     SET_ITEMS(state, items){
         state.items = items
     },
@@ -28,6 +40,13 @@ export default new Vuex.Store({
 
           const response = await apiService.read();
           commit("SET_ITEMS", response.data);
+
+
+          let categories = [...new Set(response.data.map(item => item.category))]
+
+          commit("SET_CATEGORIES", categories);
+          
+
         } catch (error) {
           throw new Error("Não foi possível carregar os itens");
         }
@@ -35,8 +54,12 @@ export default new Vuex.Store({
 
 },
   getters: {
+    categories(state){
+        return state.categories
+    },
     products(state){
-        return state.items
+
+        return state.filterBy ? state.items.filter(item => item.category === state.filterBy) : state.items
     },
     itemsOnCart(state){
         return state.itemOnCart
