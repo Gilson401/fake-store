@@ -1,14 +1,14 @@
 <template>
   <div class="home">
-    <span v-if="isLoading"> Carregando ... </span>
-    <span v-else-if="!produtos"> Não foi possível obter os dados </span>
+    <span v-if="isLoading"  class="pad-y-10"> Carregando ... </span>
+    <span v-else-if="!produtos"  class="pad-y-10"> Não foi possível obter os dados </span>
     <ProductList v-else :items="products" />
     <span v-if="error"> {{error}} </span>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
+
 import ProductList from "@/components/ProductList.vue";
 
 export default {
@@ -27,16 +27,18 @@ export default {
   },
 
   async mounted() {
-    await this.listProducts();
+    // await this.listProducts();  
   },
   computed: {
     products() {
       return this.$store.getters.products;
     },
+      
+
   },
   methods: {
     async listProducts() {
-      this.isLoading = true;
+    this.isLoading = true;
       this.error = ''
       try {
         await this.$store.dispatch("index");

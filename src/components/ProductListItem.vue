@@ -12,32 +12,27 @@
 
     <div class="product__information">
       <div class="product__title">{{ item.title }}</div>
-      <div class="product__rating">
+      <div class="product__rating my-10">
           <span v-for="rate in rating" :key="rate"> &#x2605;</span>
-          <span> ({{item.rating.count}})</span>
+          <span v-if="rating"> ({{item.rating.count}})</span>
         </div>
       <div class="product__description">{{ item.description }}</div>
-      <div class="flex space-between">
+      <div class="flex space-between vertical-center mt-20 ">
         <div class="product__price">R$ {{ item.price }}</div>
         
-        
+        <ActionButtons :item="item"/>
 
         <div class="product__ref">Ref.: {{ item.id }}</div>
       </div>
-      <div class="row">
-        <button class="cart-button" @click="addToCart()">
-          <span class="add-to-cart"> + </span>
-        </button>
-        <span>{{ itemQtdOnCart }}</span>
-        <button class="cart-button" @click="removeFromCart()">
-          <span class="add-to-cart"> - </span>
-        </button>
-      </div>
+
     </div>
   </div>
 </template>
 
 <script>
+
+import ActionButtons from "@/components/ActionButtons.vue";
+
 export default {
   props: {
     item: {
@@ -50,6 +45,10 @@ export default {
       hasLoadedImage: false,
     };
   },
+    components: {
+    ActionButtons,
+  },
+
   watch: {
     filterBy() {
       this.hasLoadedImage = false;
@@ -57,7 +56,7 @@ export default {
   },
   computed: {
     itemQtdOnCart() {
-      return this.$store.getters.itemsOnCartIdCount(this.item.id);
+      return this.$store.getters.itemQtdOnCart(this.item.id);
     },
     filterBy() {
       return this.$store.getters.filterBy;
@@ -83,110 +82,13 @@ export default {
 };
 </script>
 
-<style>
-.row {
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+<style scoped>
 
-.cart-button {
-  position: relative;
-  padding: 20px;
-  height: 50px;
-  border: 0;
-  border-radius: 10px;
-  background-color: #2b3044;
-  outline: none;
-  cursor: pointer;
-  margin: 0 10px;
-  color: #fff;
-  transition: 0.3s ease-in-out;
-  overflow: hidden;
-  user-select: none;
-}
-
-.cart-button:hover {
-  background-color: #202431;
-}
-.cart-button:active {
-  transform: scale(0.9);
-}
-
-.cart-button .fa-shopping-cart {
-  position: absolute;
-  z-index: 2;
-  top: 50%;
-  left: -10%;
-  font-size: 2em;
-  transform: translate(-50%, -50%);
-}
-
-.cart-button span {
-  position: absolute;
-  z-index: 3;
-  left: 50%;
-  top: 50%;
-  font-size: 1.2em;
-  color: #fff;
-  transform: translate(-50%, -50%);
-}
-.cart-button span.add-to-cart {
-  opacity: 1;
-}
-.cart-button span.added {
-  opacity: 0;
-}
-
-.cart-button.clicked .fa-shopping-cart {
-  animation: cart 1.5s ease-in-out forwards;
-}
-
-.cart-button.clicked span.add-to-cart {
-  animation: txt1 1.5s ease-in-out forwards;
-}
-.cart-button.clicked span.added {
-  animation: txt2 1.5s ease-in-out forwards;
-}
-@keyframes cart {
-  0% {
-    left: -10%;
-  }
-  40%,
-  60% {
-    left: 50%;
-  }
-  100% {
-    left: 110%;
-  }
-}
-
-@keyframes txt1 {
-  0% {
-    opacity: 1;
-  }
-  20%,
-  100% {
-    opacity: 0;
-  }
-}
-@keyframes txt2 {
-  0%,
-  80% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-/* ################################## */
 
 .product {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 1rem;
   padding: 0.5rem;
   margin: 0.5rem auto;
@@ -208,7 +110,6 @@ export default {
 
 .product__information {
   text-align: left;
-  margin: 8px;
   padding: 8px;
   background-color: rgba(0,0,0,.8);
   border-radius: 5px;
@@ -226,13 +127,8 @@ export default {
   margin-bottom: var(--margin-1);
 }
 
-.product__price {
-  font-size: 1rem;
-}
-
-.product__ref {
-  font-size: 1rem;
-
+.product__price, .product__ref {
+  font-size:  var(--font-4);
 }
 
 .product__rating{
@@ -241,10 +137,14 @@ export default {
     border-radius: 5px;
 }
 
-@media screen and (min-width: 468px) {
+@media screen and (min-width: 769px) {
   .product {
     flex-direction: row;
+
   }
+}
+
+@media screen and (min-width: 468px) {
 
   .product__image {
     margin: 0.5rem;

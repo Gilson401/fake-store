@@ -4,7 +4,7 @@
     <div :class="{ active: activeMenu, 'menu-container': true }">
       <div class="hide-large flex east pad-xy-10" @click="activeMenu = false">Fechar</div>
 
-      <ul class="categories__list">
+      <ul class="categories__list center">
         <li
           class="categories__listitem"
           v-for="category in categories"
@@ -99,10 +99,11 @@ export default {
 .menu-container {
   position: absolute;
   z-index: 10;
-  transform: translateX(-100%);
+  transform: translateX(-110%);
   transition: transform .5s ease-in-out;
   width: 100%;
   background-color: #fff;
+  box-shadow: 0px 10px 20px -11px grey;
 }
 
 .categories__list {
@@ -137,6 +138,7 @@ export default {
     position: relative;
     transform: translateX(0);
     transition: transform 0 linear;
+    box-shadow: unset;
   }
 
   .categories__list {
