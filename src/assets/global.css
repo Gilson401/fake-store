@@ -7,11 +7,13 @@
   --font-2: 1.5rem;
   --font-3: 1.25rem;
   --font-4: 1rem;
-  --breakpoint-md: 468;
   --margin-1: 10px;
 }
 * {
   box-sizing: border-box;
+}
+button {
+    background-color: transparent;
 }
 body {
   font-family: "Roboto Serif", serif;
@@ -57,12 +59,31 @@ h6 {
   padding-bottom: 10px;
 }
 
+.pad-x-10 {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+  
+
 .pad-xy-10 {
   padding: 10px;
 }
 
 .pad-xy-20 {
   padding: 20px;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+.my-10 {
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .east {
@@ -74,6 +95,13 @@ h6 {
   align-items: center;
 }
 
+.vertical-center {
+    align-items: center;
+}
+
+.w-1p3 {
+width:33.33%
+}
 .container {
   display: block;
   width: 100%;
@@ -85,6 +113,15 @@ h6 {
   flex-direction: column;
 }
 
+
+@media screen and (min-width: 768px) {
+    .flex-rc {
+        display: flex;
+        flex-direction: row;
+      }
+      
+}
+
 @media screen and (min-width: 468px) {
   .container {
     max-width: 80%;
@@ -93,13 +130,23 @@ h6 {
   .hide-large {
     display: none;
   }
-  .flex-rc {
-    flex-direction: row;
-  }
+
 }
 
 @media screen and (max-width: 467px) {
   .hide-small {
     display: none;
   }
+}
+
+.text-left{
+    text-align: left;
+}
+
+.text-right {
+    text-align:right;
+}
+
+.text-center{
+    text-align: center;
 }
