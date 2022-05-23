@@ -5,8 +5,7 @@
         v-show="hasLoadedImage"
         :src="item.image"
         alt="image"
-        class="product__image"
-        loading="eager"
+        class="product__image "
         @load="onLoad"
       />
       <div v-show="!hasLoadedImage" class="product__image loading" />
@@ -88,6 +87,7 @@ export default {
   width: 150px;
   height: 100px;
   object-fit: scale-down;
+  background-color: white;
   border: solid rgb(230, 227, 227) 1px;
   flex-shrink: 0;
   flex-grow: 0;
