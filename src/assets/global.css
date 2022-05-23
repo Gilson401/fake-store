@@ -17,6 +17,7 @@ button {
 }
 body {
   font-family: "Roboto Serif", serif;
+  background-color: #B3DEC1;
 }
 h1 {
   font-size: calc(2rem * var(--fontSize));
@@ -84,6 +85,11 @@ h6 {
 .my-10 {
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+.my-20 {
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .east {
