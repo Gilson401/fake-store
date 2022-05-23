@@ -6,16 +6,34 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         items: [],
+        isLoading: false,
         itemOnCart: [],
         orderBy: 'price',
         categories: [],
-        filterBy: '',
+        filterBy: [],
         rateRange: { min: 0, max: 0 },
         selectedRate: 0,
+        sortedBy: 'rate'
     },
     mutations: {
-        SET_FILTER_BY(state, filterBy) {
-            state.filterBy = filterBy
+        TOGGLE_FILTER_BY(state, filterBy) {
+            const index = state.filterBy.findIndex((i) => i === filterBy)
+            const tempfilters = [...state.filterBy]
+
+            if(index >= 0){
+                state.filterBy.splice(index, 1);
+            }else{
+                tempfilters.push(filterBy)
+                state.filterBy = tempfilters
+            }
+        },
+
+        RESET_FILTER(state) {            
+            state.filterBy = []
+        },
+
+        SET_SORT(state, sortedBy) {
+            state.sortedBy = sortedBy
         },
 
         SET_CATEGORIES(state, categories) {
@@ -25,6 +43,11 @@ export default new Vuex.Store({
         SET_RATE_RANGE(state, range) {
             state.rateRange = range
         },
+
+        SET_IS_LOADING(state, loading) {
+            state.isLoading = loading
+        },
+
 
         SET_ITEMS(state, items) {
             state.items = items
@@ -70,16 +93,21 @@ export default new Vuex.Store({
     },
     actions: {
         async index({ commit }) {
-            try {
+   
+                commit("SET_IS_LOADING", true)
 
                 const response = await apiService.read();
-                commit("SET_ITEMS", response.data);
 
+                response.data.map((item) =>{
+                    item.rate = item.rating.rate,
+                    item.votes = item.rating.count
+                }  )
+
+                commit("SET_ITEMS", response.data);
 
                 let categories = [...new Set(response.data.map(item => item.category))]
 
                 commit("SET_CATEGORIES", categories);
-
 
                 const rates = response.data.map(item => item.rating.rate)
                 const rangeObject = {
@@ -89,13 +117,8 @@ export default new Vuex.Store({
                 commit("SET_RATE_RANGE", rangeObject);
 
                 commit("SET_SELECTED_RATE", rangeObject.min);
-
-
-            } catch (error) {
-                throw new Error("Não foi possível carregar os itens");
-            }
+                commit("SET_IS_LOADING", false)
         },
-
     },
     getters: {
         rateRange(state) {
@@ -111,8 +134,22 @@ export default new Vuex.Store({
             return state.filterBy
         },
         products(state) {
-            let temp = state.filterBy ? state.items.filter(item => item.category === state.filterBy) : state.items
-            return temp.filter(item => item.rating.rate >= state.selectedRate)
+            let temp = state.filterBy.length ? 
+                state.items.filter(item => state.filterBy.includes(item.category)) : state.items
+               
+                temp =  temp.filter(item => item.rating.rate >= state.selectedRate)
+                .sort(function (a, b) {
+                    if (a[state.sortedBy] > b[state.sortedBy]) {
+                      return -1;
+                    }
+                    if (a[state.sortedBy] < b[state.sortedBy]) {
+                      return 1;
+                    }
+                    return 0;
+                  });
+                  
+            
+                return temp
         },
         itemsOnCart(state) {
             return state.itemOnCart
@@ -125,6 +162,9 @@ export default new Vuex.Store({
         },
         cartTotalPrice(state) {
             return state.itemOnCart.reduce((acc, curr) => acc + (curr.price * curr.qtd), 0)
+        },
+        isLoading(state) {
+            return state.isLoading
         },
     },
  

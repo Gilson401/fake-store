@@ -5,8 +5,7 @@
       :src="item.image"
       alt="image"
       class="product__image"
-      loading="eager"
-      @load="onLoad"
+       @load="onLoad"
     />
     <div v-show="!hasLoadedImage" class="product__image loading" />
 
@@ -65,7 +64,7 @@ export default {
       const  numerador = this.item.rating.rate - this.$store.getters.rateRange.min;
       const denominador  =this.$store.getters.rateRange.max - this.$store.getters.rateRange.min;
       const range = (numerador / denominador) * 5;
-      return parseInt(range) || 0;
+      return Math.floor(range) || 0;
     },
   },
   methods: {
@@ -100,6 +99,7 @@ export default {
   width: 300px;
   height: 200px;
   object-fit: scale-down;
+  background-color: white;
   border: solid rgb(230, 227, 227) 1px;
   flex-shrink: 0;
   flex-grow: 0;
