@@ -9,20 +9,21 @@
           class="categories__listitem"
           v-for="category in categories"
           :key="category"
-          @click="setFilterCategory(category)"
+          @click="manageFilterCategory(category)"
         >
           <span
             :class="{
-              'categories__listitem-active': filterBy === category,
+              'categories__listitem-active': filterBy.includes(category),
             }"
           >
             {{ category }}
           </span>
         </li>
-        <li class="categories__listitem" @click="setFilterCategory('')">
+        <li class="categories__listitem" 
+        @click="$store.commit('RESET_FILTER')">
           <span
             :class="{
-              'categories__listitem-active': filterBy === '',
+              'categories__listitem-active': !filterBy.length,
             }"
           >
             Todos
@@ -42,6 +43,12 @@
             />
              <label for="rate"> {{ selectedRate }}</label>
           </div>
+        </li>
+        <li>
+            <select name="sort" @change="setSort">
+                <option value="category">Categoria</option>
+                <option selected value="rate">Classificação</option>
+            </select>
         </li>
       </ul>
     </div>
@@ -87,8 +94,11 @@ export default {
     setRate(e) {
       this.$store.commit("SET_SELECTED_RATE", parseFloat(e.target.value));
     },
-    setFilterCategory(category) {
-      this.$store.commit("SET_FILTER_BY", category);
+    setSort(e) {
+      this.$store.commit("SET_SORT", e.target.value);
+    },
+    manageFilterCategory(category) {
+      this.$store.commit("TOGGLE_FILTER_BY", category);
       this.activeMenu = false;
     },
   },
