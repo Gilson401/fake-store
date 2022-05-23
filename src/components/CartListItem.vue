@@ -15,7 +15,7 @@
       <div class="product__description">{{ item.description }}</div>
 
       <div class="product__information vertical-center">
-        <div class="pad-y-10 product__price w-1p3 text-left">R$ {{ item.price }}</div>
+        <div class="pad-y-10 product__price w-1p3 text-left">{{ item.price | brlFormatter }}</div>
          <ActionButtons :item="item" class="w-1p3"/>
         <div class="pad-y-10 product__qtd w-1p3 text-right">Qtd: {{ itemQtdOnCart }}</div>
       </div>
@@ -26,7 +26,7 @@
 <script>
 
 import ActionButtons from "@/components/ActionButtons.vue";
-
+import { brlFormat } from "../helpers/numbers"
 export default {
   name: "CartListItem",
   props: {
@@ -34,6 +34,11 @@ export default {
       type: Object,
       default: () => {},
     },
+  },
+  filters:{
+      brlFormatter(value){
+          return brlFormat(value)
+      }
   },
   data() {
     return {

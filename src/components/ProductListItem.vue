@@ -17,7 +17,7 @@
         </div>
       <div class="product__description">{{ item.description }}</div>
       <div class="flex space-between vertical-center mt-20 ">
-        <div class="product__price">R$ {{ item.price }}</div>
+        <div class="product__price">{{ item.price | brlFormatter }}</div>
         
         <ActionButtons :item="item"/>
 
@@ -31,13 +31,18 @@
 <script>
 
 import ActionButtons from "@/components/ActionButtons.vue";
-
+import { brlFormat } from "../helpers/numbers"
 export default {
   props: {
     item: {
       type: Object,
       default: () => {},
     },
+  },
+    filters:{
+      brlFormatter(value){
+          return brlFormat(value)
+      }
   },
   data() {
     return {
