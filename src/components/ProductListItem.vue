@@ -12,14 +12,25 @@
     <div class="product__information">
       <div class="product__title">{{ item.title }}</div>
       <div class="product__rating my-10">
-          <span v-for="rate in rating" :key="rate"> &#x2605;</span>
+
+          <span>
+          <font-awesome-icon v-for="rates in rating" :key="rates" :icon="['fas', 'star']" />
+
+          </span>
+
+           <span>
+          <font-awesome-icon v-for="rate in (5 - rating)" :key="rate + 10" :icon="['far', 'star']" />
+              
+          </span>
           <span v-if="rating"> ({{item.rating.count}})</span>
         </div>
       <div class="product__description">{{ item.description }}</div>
       <div class="flex space-between vertical-center mt-20 ">
         <div class="product__price">{{ item.price | brlFormatter }}</div>
         
-        <ActionButtons :item="item"/>
+        <ActionButtons 
+        :item="item"
+        mode="type"/>
 
         <div class="product__ref">Ref.: {{ item.id }}</div>
       </div>
@@ -66,10 +77,7 @@ export default {
       return this.$store.getters.filterBy;
     },
     rating() {
-      const  numerador = this.item.rating.rate - this.$store.getters.rateRange.min;
-      const denominador  =this.$store.getters.rateRange.max - this.$store.getters.rateRange.min;
-      const range = (numerador / denominador) * 5;
-      return Math.floor(range) || 0;
+      return  Math.floor(this.item.rating.rate) ;
     },
   },
   methods: {
@@ -77,7 +85,7 @@ export default {
       this.$store.commit("ADD_ITEM_CART", this.item);
     },
     removeFromCart() {
-      this.$store.commit("REMOVE_ITEM_CART", this.item.id);
+      this.$store.commit("REMOVE_UNITY_CART", this.item.id);
     },
     onLoad() {
       this.hasLoadedImage = true;
@@ -96,34 +104,35 @@ export default {
   gap: 1rem;
   padding: 0.5rem;
   margin: 0.5rem auto;
-  border: solid rgb(230, 227, 227) 1px;
+  border: solid rgb(230, 227, 227) .1rem;
   border-radius: 0.25rem;
 }
 
 .product__image {
-  width: 300px;
-  height: 200px;
+  width: 30rem;
+  height: 20rem;
   object-fit: scale-down;
   background-color: white;
-  border: solid rgb(230, 227, 227) 1px;
+  border: solid rgb(230, 227, 227) .1rem;
   flex-shrink: 0;
   flex-grow: 0;
   margin: 0.5rem auto;
-  border-radius: 5px;
+  border-radius: .5rem;
   overflow: hidden;
 }
 
 .product__information {
+  width: 100%;
   text-align: left;
-  padding: 8px;
+  padding: .8rem;
   background-color: rgba(0,0,0,.8);
-  border-radius: 5px;
+  border-radius: .5rem;
   overflow: hidden;
   color: rgb(231, 231, 231);
 }
 
 .product__title {
-  font-size: 1.5rem;
+  font-size: var(--font-2);
   margin-bottom: var(--margin-1);
 }
 
@@ -133,13 +142,13 @@ export default {
 }
 
 .product__price, .product__ref {
-  font-size:  var(--font-4);
+  font-size:  var(--font-3);
 }
 
 .product__rating{
     color: rgb(255, 241, 112);
     padding: 0.3rem;
-    border-radius: 5px;
+    border-radius: .5rem;
 }
 
 @media screen and (min-width: 769px) {
@@ -149,7 +158,7 @@ export default {
   }
 }
 
-@media screen and (min-width: 468px) {
+@media screen and (min-width: 46.8rem) {
 
   .product__image {
     margin: 0.5rem;
@@ -166,7 +175,7 @@ export default {
 
 @keyframes loading {
   to {
-    background-position: 315px 0, 0 0, 0 190px, 50px 195px;
+    background-position: 31.5rem 0, 0 0, 0 19rem, 5rem 19.5rem;
   }
 }
 </style>

@@ -1,19 +1,20 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import apiService from '../services/products'
+import apiService from '../services/products' 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        items: [],
+        items: [
+          ],
         isLoading: false,
-        itemOnCart: [],
-        orderBy: 'price',
+        itemsOnCart: [],
         categories: [],
         filterBy: [],
         rateRange: { min: 0, max: 0 },
         selectedRate: 0,
-        sortedBy: 'rate'
+        sortedBy: 'rate',
+        searchTerm: ''
     },
     mutations: {
         TOGGLE_FILTER_BY(state, filterBy) {
@@ -53,50 +54,63 @@ export default new Vuex.Store({
             state.items = items
         },
         ADD_ITEM_CART(state, item) {
-            const index = state.itemOnCart.findIndex((i) => i.id === item.id)
+            const index = state.itemsOnCart.findIndex((i) => i.id === item.id)
 
             if (index >= 0) {
 
-                const itemOnChart = { ...state.itemOnCart.find((i) => i.id === item.id) }
+                const itemOnChart = { ...state.itemsOnCart.find((i) => i.id === item.id) }
                 itemOnChart.qtd = itemOnChart.qtd + 1
-                Vue.set(state.itemOnCart, index, itemOnChart)
+                Vue.set(state.itemsOnCart, index, itemOnChart)
             } else {
 
                 item.qtd = 1
-                state.itemOnCart.push(item)
+                state.itemsOnCart.push(item)
             }
 
         },
 
-        REMOVE_ITEM_CART(state, itemId) {
+        REMOVE_UNITY_CART(state, itemId) {
 
-            const index = state.itemOnCart.findIndex((i) => i.id === itemId)
+            const index = state.itemsOnCart.findIndex((i) => i.id === itemId)
 
             if (index >= 0) {
-                const itemOnChart = { ...state.itemOnCart.find((i) => i.id === itemId) }
+                const itemOnChart = { ...state.itemsOnCart.find((i) => i.id === itemId) }
                 itemOnChart.qtd = itemOnChart.qtd - 1
 
                 if (itemOnChart.qtd === 0) {
 
-                    state.itemOnCart.splice(index, 1);
+                    state.itemsOnCart.splice(index, 1);
                 } else {
-                    Vue.set(state.itemOnCart, index, itemOnChart)
+                    Vue.set(state.itemsOnCart, index, itemOnChart)
                 }
             }
 
+        },
+
+        DELETE_ITEM_CART(state, itemId) {
+
+            const index = state.itemsOnCart.findIndex((i) => i.id === itemId)
+
+            if (index >= 0) {
+                    state.itemsOnCart.splice(index, 1);
+            }
         },
 
         SET_SELECTED_RATE(state, rate) {
             state.selectedRate = rate
         },
 
+        SET_SEARCH_TERM(state, searchTerm) {
+            state.searchTerm = searchTerm
+        },
+
     },
     actions: {
-        async index({ commit }) {
+         async index({ commit, state }) {
    
                 commit("SET_IS_LOADING", true)
 
-                const response = await apiService.read();
+                const response = await apiService.read(); 
 
                 response.data.map((item) =>{
                     item.rate = item.rating.rate,
@@ -116,7 +130,11 @@ export default new Vuex.Store({
                 }
                 commit("SET_RATE_RANGE", rangeObject);
 
-                commit("SET_SELECTED_RATE", rangeObject.min);
+                if(!state.selectedRate){
+
+                    commit("SET_SELECTED_RATE", rangeObject.min);
+                }
+
                 commit("SET_IS_LOADING", false)
         },
     },
@@ -124,6 +142,12 @@ export default new Vuex.Store({
         rateRange(state) {
             return state.rateRange
         },
+
+        
+        sortedBy(state) {
+            return state.sortedBy
+        },
+
         selectedRate(state) {
             return state.selectedRate
         },
@@ -134,16 +158,25 @@ export default new Vuex.Store({
             return state.filterBy
         },
         products(state) {
+
+            const isPriceSort = state.sortedBy==="price" ? -1 : 1
             let temp = state.filterBy.length ? 
                 state.items.filter(item => state.filterBy.includes(item.category)) : state.items
                
                 temp =  temp.filter(item => item.rating.rate >= state.selectedRate)
+                .filter(item => 
+                    {
+                        return  state.searchTerm ? 
+                        item.title.concat(item.description).toLowerCase().includes(state.searchTerm.toLowerCase()) 
+                        : true
+                    } )
+                
                 .sort(function (a, b) {
                     if (a[state.sortedBy] > b[state.sortedBy]) {
-                      return -1;
+                      return -1 * isPriceSort;
                     }
                     if (a[state.sortedBy] < b[state.sortedBy]) {
-                      return 1;
+                      return 1 * isPriceSort;
                     }
                     return 0;
                   });
@@ -152,16 +185,19 @@ export default new Vuex.Store({
                 return temp
         },
         itemsOnCart(state) {
-            return state.itemOnCart
+            return state.itemsOnCart
+        },
+        uniqueItemsOnCart(state) {
+            return state.itemsOnCart.length
         },
         itemQtdOnCart(state) {
             return (id) => {
-                const item = state.itemOnCart.find(i => i.id == id)
+                const item = state.itemsOnCart.find(i => i.id == id)
                 return item ? item.qtd : 0
             }
         },
         cartTotalPrice(state) {
-            return state.itemOnCart.reduce((acc, curr) => acc + (curr.price * curr.qtd), 0)
+            return state.itemsOnCart.reduce((acc, curr) => acc + (curr.price * curr.qtd), 0)
         },
         isLoading(state) {
             return state.isLoading

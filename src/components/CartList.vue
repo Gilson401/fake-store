@@ -1,9 +1,15 @@
 <template>
   <div>
-    <h2 v-if="!items.length" class="pad-y-10">Não há itens no carrinho.</h2>
-    <h2 v-else class="pad-y-10">Total do Carrinho {{ cartTotalPrice }}</h2>
+    <h3 v-if="!items.length" class="pad-y-40">
+        <font-awesome-icon  :icon="['fas', 'exclamation-triangle']" />
+        Não há itens no carrinho.
+    </h3>
+    <h3 v-else class="pad-y-20">
+        Teu carrinho.
+    </h3>
 
     <CartListItem v-for="(item, index) in items" :key="index" :item="item" />
+    <h2 v-if="items.length" class="pad-y-10">Total do Carrinho {{ cartTotalPrice }}</h2>
   </div>
 </template>
 

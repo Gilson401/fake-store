@@ -5,7 +5,7 @@
         v-show="hasLoadedImage"
         :src="item.image"
         alt="image"
-        class="product__image "
+        class="product__image"
         @load="onLoad"
       />
       <div v-show="!hasLoadedImage" class="product__image loading" />
@@ -14,19 +14,19 @@
     <div class="product__info">
       <div class="product__description">{{ item.description }}</div>
 
-      <div class="product__information vertical-center">
-        <div class="pad-y-10 product__price w-1p3 text-left">{{ item.price | brlFormatter }}</div>
-         <ActionButtons :item="item" class="w-1p3"/>
-        <div class="pad-y-10 product__qtd w-1p3 text-right">Qtd: {{ itemQtdOnCart }}</div>
+      <div class="product__information vertical-center space-between">
+        <div class="pad-y-10 product__price w-1p3 text-left">
+          {{ item.price | brlFormat }}
+        </div>
+        <ActionButtons class="w-2p3" :item="item" mode="qtd" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-
 import ActionButtons from "@/components/ActionButtons.vue";
-import { brlFormat } from "../helpers/numbers"
+import { brlFormat } from "../helpers/numbers";
 export default {
   name: "CartListItem",
   props: {
@@ -35,17 +35,15 @@ export default {
       default: () => {},
     },
   },
-  filters:{
-      brlFormatter(value){
-          return brlFormat(value)
-      }
+  filters: {
+    brlFormat,
   },
   data() {
     return {
       hasLoadedImage: false,
     };
   },
-      components: {
+  components: {
     ActionButtons,
   },
 
@@ -55,12 +53,6 @@ export default {
     },
   },
   methods: {
-    addToCart() {
-      this.$store.commit("ADD_ITEM_CART", this.item);
-    },
-    removeFromCart() {
-      this.$store.commit("REMOVE_ITEM_CART", this.item.id);
-    },
     onLoad() {
       this.hasLoadedImage = true;
     },
@@ -84,31 +76,33 @@ export default {
   gap: 1rem;
   padding: 0.5rem;
   margin: 0.5rem auto;
-  border: solid rgb(230, 227, 227) 1px;
+  border: solid rgb(230, 227, 227) 0.1rem;
   border-radius: 0.25rem;
 }
 
 .product__image {
-  width: 150px;
-  height: 100px;
+  width: 15rem;
+  height: 10rem;
   object-fit: scale-down;
   background-color: white;
-  border: solid rgb(230, 227, 227) 1px;
+  border: solid rgb(230, 227, 227) 0.1rem;
   flex-shrink: 0;
   flex-grow: 0;
   margin: 0.5rem auto;
-  border-radius: 5px;
+  border-radius: 0.5rem;
   overflow: hidden;
 }
-
+.product__info {
+  width: 100%;
+}
 .product__information {
   display: flex;
   justify-content: space-between;
   text-align: left;
-  margin: 8px;
-  padding: 8px;
+  margin: 0.8rem;
+  padding: 0.8rem;
   background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 5px;
+  border-radius: 0.5rem;
   overflow: hidden;
   color: rgb(231, 231, 231);
 }
@@ -119,21 +113,16 @@ export default {
 }
 
 .product__price {
-  font-size: 1rem;
+  font-size: var(--font-3);
 }
-
 
 @media screen and (min-width: 769px) {
   .product {
     flex-direction: row;
-
   }
 }
 
-
 @media screen and (min-width: 468px) {
-
-
   .product__image {
     margin: 0.5rem;
   }
@@ -156,7 +145,7 @@ export default {
 
 @keyframes loading {
   to {
-    background-position: 315px 0, 0 0, 0 190px, 50px 195px;
+    background-position: 31.5rem 0, 0 0, 0 19rem, 5rem 19.5rem;
   }
 }
 </style>
