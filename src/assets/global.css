@@ -1,46 +1,71 @@
-
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,200;0,8..144,300;0,8..144,400;0,8..144,500;1,8..144,200;1,8..144,300;1,8..144,400&display=swap");
 
 :root {
-  --fontSize: 0.8;
-  --font-1: 2rem;
-  --font-2: 1.5rem;
-  --font-3: 1.25rem;
-  --font-4: 1rem;
-  --margin-1: 10px;
+  font-size: 62.5%;
+  --font-1: 2.5rem;
+  --font-2: 2.25rem;
+  --font-3: 2rem;
+  --font-4: 1.5rem;
+  --font-5: 1rem;
+  --font-6: 0.75rem;
+  --margin-1: 0.1rem;
 }
 * {
   box-sizing: border-box;
 }
 button {
-    background-color: transparent;
+  background-color: transparent;
 }
 body {
   font-family: "Roboto Serif", serif;
-  background-color: #B3DEC1;
+  background-color: #b3dec1;
 }
 h1 {
-  font-size: calc(2rem * var(--fontSize));
+  font-size: var(--font-1);
 }
 
 h2 {
-  font-size: calc(1.5rem * var(--fontSize));
+  font-size: var(--font-2);
 }
 
 h3 {
-  font-size: calc(1.25rem * var(--fontSize));
+  font-size: var(--font-3);
 }
 
 h4 {
-  font-size: calc(1rem * var(--fontSize));
+  font-size: var(--font-4);
 }
 
 h5 {
-  font-size: calc(0.75rem * var(--fontSize));
+  font-size: var(--font-5);
 }
 
 h6 {
-  font-size: calc(0.5rem * var(--fontSize));
+  font-size: var(--font-6);
+}
+
+.text-1 {
+  font-size: var(--font-1);
+}
+
+.text-2 {
+  font-size: var(--font-2);
+}
+
+.text-3 {
+  font-size: var(--font-3);
+}
+
+.text-4 {
+  font-size: var(--font-4);
+}
+
+.text-5 {
+  font-size: var(--font-5);
+}
+
+.text-6 {
+  font-size: var(--font-6);
 }
 
 .flex {
@@ -55,59 +80,111 @@ h6 {
   justify-content: space-between;
 }
 
+.pad-y-5 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
 .pad-y-10 {
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.pad-y-20 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.pad-y-30 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.pad-y-40 {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
 }
 
 .pad-x-10 {
-    padding-left: 10px;
-    padding-right: 10px;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
-  
 
 .pad-xy-10 {
-  padding: 10px;
+  padding: 1rem;
 }
 
 .pad-xy-20 {
-  padding: 20px;
+  padding: 2rem;
 }
 
 .mt-10 {
-    margin-top: 10px;
+  margin-top: 1rem;
 }
 
 .mt-20 {
-    margin-top: 20px;
+  margin-top: 2rem;
 }
 
 .my-10 {
-    margin-top: 10px;
-    margin-bottom: 10px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .my-20 {
-    margin-top: 20px;
-    margin-bottom: 20px;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
+
+.mx-10 {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+  
+  .mx-20 {
+    margin-left: 2rem;
+    margin-right: 2rem;
+  }
+
 
 .east {
   justify-content: flex-end;
   align-items: center;
 }
+
+.west {
+    justify-content: flex-start;
+    align-items: center;
+  }
+
 .center {
   justify-content: center;
   align-items: center;
 }
 
 .vertical-center {
-    align-items: center;
+  align-items: center;
 }
 
 .w-1p3 {
-width:33.33%
+  width: 33.33%;
 }
+
+.w-2p3 {
+    width: 66.66%;
+  }
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
 .container {
   display: block;
   width: 100%;
@@ -119,13 +196,15 @@ width:33.33%
   flex-direction: column;
 }
 
+.block-inline-468 {
+    display: block;
+}
 
 @media screen and (min-width: 768px) {
-    .flex-rc {
-        display: flex;
-        flex-direction: row;
-      }
-      
+  .flex-rc {
+    display: flex;
+    flex-direction: row;
+  }
 }
 
 @media screen and (min-width: 468px) {
@@ -136,7 +215,9 @@ width:33.33%
   .hide-large {
     display: none;
   }
-
+  .block-inline-468{
+    display: flex;
+  }
 }
 
 @media screen and (max-width: 467px) {
@@ -145,14 +226,14 @@ width:33.33%
   }
 }
 
-.text-left{
-    text-align: left;
+.text-left {
+  text-align: left;
 }
 
 .text-right {
-    text-align:right;
+  text-align: right;
 }
 
-.text-center{
-    text-align: center;
+.text-center {
+  text-align: center;
 }
