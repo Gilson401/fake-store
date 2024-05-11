@@ -28,4 +28,4 @@ E-commerce que consome a [API](https://fakestoreapi.com/).
 
 #### Deploy
 
-O deploy foi feito na netlify e está disponível em [APP](https://petit-dubois.netlify.app/).
+O deploy foi feito no serviço netlify e está disponível em [APP](https://petit-dubois.netlify.app/).
